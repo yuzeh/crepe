@@ -60,12 +60,8 @@ crepe = (function() {
 
     return function(activation) {
       // render
-      const maxA = Math.max(activation);
-      const minA = Math.min(activation);
-      console.log(maxA);
-      console.log(minA);
       for (var i = 0; i < 360; i++) {
-        const a = (activation[i] - minA) / (maxA - minA + 0.01);
+        const a = activation[i];
         value = Math.floor(a * 256.0);
         if (isNaN(value) || value < 0) value = 0;
         if (value > 256) value = 256;
@@ -144,7 +140,9 @@ crepe = (function() {
         const weightSum = weights.dataSync().reduce((a, b) => a + b, 0);
         const predicted_cent = productSum / weightSum;
         const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0);
-        const sumWeights = activation.dataSync().reduce((a, b) => a + b, 0) * 20 / 360;
+        const act = activation.dataSync();
+        console.log(act);
+        const sumWeights = act.reduce((a, b) => a + b, 0) * 20 / 360;
 
         // update the UI and the activation plot
         var result = (confidence > 0.5) ? predicted_hz.toFixed(3) + ' Hz' : '&nbsp;no voice&nbsp&nbsp;';
