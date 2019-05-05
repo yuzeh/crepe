@@ -139,12 +139,13 @@ crepe = (function() {
         const weightSum = weights.dataSync().reduce((a, b) => a + b, 0);
         const predicted_cent = productSum / weightSum;
         const predicted_hz = 10 * Math.pow(2, predicted_cent / 1200.0);
+        const sumWeights = activations.dataSync().reduce((a, b) => a + b, 0) * 20 / 360;
 
         // update the UI and the activation plot
         var result = (confidence > 0.5) ? predicted_hz.toFixed(3) + ' Hz' : '&nbsp;no voice&nbsp&nbsp;';
         var strlen = result.length;
         for (var i = 0; i < 11 - strlen; i++) result = "&nbsp;" + result;
-        document.getElementById('estimated-pitch').innerHTML = result;
+        document.getElementById('estimated-pitch').innerHTML = result + ' ' + sumWeights;
         updateActivation(activation.dataSync());
       });
     });
