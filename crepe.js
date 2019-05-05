@@ -60,10 +60,15 @@ crepe = (function() {
 
     return function(activation) {
       // render
+      const maxA = Math.max(activation);
+      const minA = Math.min(activation);
+      console.log(maxA);
+      console.log(minA);
       for (var i = 0; i < 360; i++) {
-        value = Math.floor(activation[i] * 256.0);
+        const a = (activation[i] - minA) / (maxA - minA + 0.01);
+        value = Math.floor(a * 256.0);
         if (isNaN(value) || value < 0) value = 0;
-        if (value > 256) value = 1;
+        if (value > 256) value = 256;
         buffer.data.set(inferno[value], ((canvas.height - 1 - i) * canvas.width + column) * 4);
       }
 
